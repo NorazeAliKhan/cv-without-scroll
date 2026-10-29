@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full overflow-hidden">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Noraze Khan | CV Portfolio (Zero-Scroll)</title>
+  <meta name="description" content="Personal CV Portfolio of Noraze Khan — Aspiring Software Developer & BSCS Student at Qarshi University. Compact, zero-scroll interactive portfolio dashboard."/>
+  
+  <!-- Google Fonts: Inter & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#000a24",
+            "on-primary": "#ffffff",
+            "primary-container": "#14213d",
+            "on-primary-container": "#7c89aa",
+            "primary-fixed": "#d9e2ff",
+            "primary-fixed-dim": "#b9c6ea",
+            "on-primary-fixed": "#0d1b36",
+            "on-primary-fixed-variant": "#3a4664",
+            "secondary": "#0051d5",
+            "on-secondary": "#ffffff",
+            "secondary-container": "#316bf3",
+            "on-secondary-container": "#fefcff",
+            "secondary-fixed": "#dbe1ff",
+            "secondary-fixed-dim": "#b4c5ff",
+            "on-secondary-fixed": "#00174b",
+            "on-secondary-fixed-variant": "#003ea8",
+            "tertiary": "#000e0b",
+            "on-tertiary": "#ffffff",
+            "tertiary-container": "#002721",
+            "on-tertiary-container": "#049a87",
+            "tertiary-fixed": "#83f6e0",
+            "tertiary-fixed-dim": "#65dac4",
+            "on-tertiary-fixed": "#00201b",
+            "on-tertiary-fixed-variant": "#005046",
+            "surface": "#f8f9ff",
+            "on-surface": "#121c2a",
+            "surface-variant": "#d9e3f6",
+            "on-surface-variant": "#45464d",
+            "surface-dim": "#d0dbed",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "surface-container": "#e6eeff",
+            "surface-container-high": "#dee9fc",
+            "surface-container-highest": "#d9e3f6",
+            "surface-tint": "#525e7d",
+            "outline": "#75777e",
+            "outline-variant": "#c5c6ce",
+            "background": "#f8f9ff",
+            "on-background": "#121c2a",
+            "error": "#ba1a1a",
+            "on-error": "#ffffff",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a"
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "sm": "0.125rem",
+            "md": "0.375rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            "sans": ["Inter", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+            "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Complete Zero-Scroll Enforcement */
+    *, *::before, *::after {
+      scrollbar-width: none !important; /* Firefox */
+      -ms-overflow-style: none !important; /* IE and Edge */
+      box-sizing: border-box;
+    }
+    *::-webkit-scrollbar {
+      display: none !important; /* Chrome, Safari, Edge */
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    html, body {
+      height: 100vh !important;
+      width: 100vw !important;
+      max-height: 100vh !important;
+      overflow: hidden !important;
+      overscroll-behavior: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      vertical-align: middle;
+      user-select: none;
+    }
+
+    /* Tab switching animation */
+    .view-panel {
+      display: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    }
+    .view-panel.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Card micro-interactions */
+    .interactive-card {
+      transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.16s ease;
+    }
+    .interactive-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px -3px rgba(20, 33, 61, 0.08), 0 3px 6px -2px rgba(20, 33, 61, 0.04);
+      border-color: rgba(37, 99, 235, 0.35);
+    }
+  </style>
+</head>
+
+<body class="bg-surface text-on-surface flex flex-col h-screen w-screen overflow-hidden antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+
+  <!-- TOP APP HEADER (Fixed height: 52px) -->
+  <header class="h-[52px] shrink-0 bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/30 px-3 sm:px-6 flex items-center justify-between z-30 shadow-[0_1px_6px_rgba(20,33,61,0.04)]">
+    <!-- Brand Info -->
+    <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchTab('overview')">
+      <div class="w-7 h-7 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold text-xs shadow-sm">
+        NK
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-primary tracking-tight text-sm sm:text-base">Noraze Khan</span>
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-semibold">Intern</span>
+      </div>
+    </div>
+
+    <!-- Center Navigation Tabs (Direct View Switching, Zero Page Scroll) -->
+    <nav class="hidden md:flex items-center gap-1 bg-surface-container-low p-1 rounded-xl border border-outline-variant/30" role="tablist">
+      <button class="tab-btn px-2.5 py-1 rounded-lg text-xs font-semibold transition-all duration-150 bg-secondary text-on-secondary shadow-sm" data-tab="overview" role="tab" aria-selected="true">
+        Overview
+      </button>
+      <button class="tab-btn px-2.5 py-1 rounded-lg text-xs font-medium text-on-surface-variant hover:text-secondary hover:bg-surface-container transition-all duration-150" data-tab="about" role="tab" aria-selected="false">
+        About
+      </button>
+      <button class="tab-btn px-2.5 py-1 rounded-lg text-xs font-medium text-on-surface-variant hover:text-secondary hover:bg-surface-container transition-all duration-150" data-tab="skills" role="tab" aria-selected="false">
+        Skills
+      </button>
+      <button class="tab-btn px-2.5 py-1 rounded-lg text-xs font-medium text-on-surface-variant hover:text-secondary hover:bg-surface-container transition-all duration-150" data-tab="projects" role="tab" aria-selected="false">
+        Projects
+      </button>
+      <button class="tab-btn px-2.5 py-1 rounded-lg text-xs font-medium text-on-surface-variant hover:text-secondary hover:bg-surface-container transition-all duration-150" data-tab="education" role="tab" aria-selected="false">
+        Education
+      </button>
+      <button class="tab-btn px-2.5 py-1 rounded-lg text-xs font-medium text-on-surface-variant hover:text-secondary hover:bg-surface-container transition-all duration-150" data-tab="certifications" role="tab" aria-selected="false">
+        Certifications
+      </button>
+      <button class="tab-btn px-2.5 py-1 rounded-lg text-xs font-medium text-on-surface-variant hover:text-secondary hover:bg-surface-container transition-all duration-150" data-tab="contact" role="tab" aria-selected="false">
+        Contact
+      </button>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="flex items-center gap-2">
+      <button onclick="switchTab('contact')" class="inline-flex items-center gap-1 h-8 px-3 rounded-lg bg-secondary text-on-secondary text-xs font-semibold hover:bg-secondary-container transition-colors shadow-sm">
+        <span class="material-symbols-outlined text-[15px]">mail</span>
+        <span>Contact</span>
+      </button>
+      <a href="https://github.com/NorazeAliKhan" target="_blank" rel="noopener noreferrer" class="p-1.5 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container transition-colors" title="GitHub Profile">
+        <svg aria-hidden="true" class="w-4 h-4 fill-current" viewbox="0 0 24 24">
+          <path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- MOBILE COMPACT HORIZONTAL TAB BAR (HIDDEN ON DESKTOP, NO SCROLLBAR) -->
+  <div class="md:hidden shrink-0 bg-surface-container-low border-b border-outline-variant/30 px-2 py-1 flex items-center justify-between overflow-hidden">
+    <button class="tab-btn px-2 py-1 rounded text-[11px] font-semibold bg-secondary text-on-secondary" data-tab="overview">Overview</button>
+    <button class="tab-btn px-2 py-1 rounded text-[11px] font-medium text-on-surface-variant hover:bg-surface-container" data-tab="about">About</button>
+    <button class="tab-btn px-2 py-1 rounded text-[11px] font-medium text-on-surface-variant hover:bg-surface-container" data-tab="skills">Skills</button>
+    <button class="tab-btn px-2 py-1 rounded text-[11px] font-medium text-on-surface-variant hover:bg-surface-container" data-tab="projects">Projects</button>
+    <button class="tab-btn px-2 py-1 rounded text-[11px] font-medium text-on-surface-variant hover:bg-surface-container" data-tab="education">Edu</button>
+    <button class="tab-btn px-2 py-1 rounded text-[11px] font-medium text-on-surface-variant hover:bg-surface-container" data-tab="certifications">Certs</button>
+    <button class="tab-btn px-2 py-1 rounded text-[11px] font-medium text-on-surface-variant hover:bg-surface-container" data-tab="contact">Contact</button>
+  </div>
+
+  <!-- MAIN DASHBOARD WORKSPACE (Fitted precisely inside viewport: ZERO SCROLLING) -->
+  <main class="flex-1 flex overflow-hidden p-2.5 sm:p-4 max-w-7xl w-full mx-auto gap-3 lg:gap-4">
+
+    <!-- LEFT PERSISTENT PROFILE SIDEBAR -->
+    <aside class="hidden lg:flex flex-col justify-between w-64 xl:w-72 shrink-0 bg-surface-container-lowest rounded-xl p-3.5 xl:p-4 shadow-sm border border-outline-variant/20 overflow-hidden">
+      <div class="flex flex-col items-center text-center gap-2">
+        <!-- Student Portrait (No text on photo, rounded, clean border) -->
+        <div class="relative w-28 h-28 xl:w-32 xl:h-32 rounded-xl overflow-hidden p-1 bg-gradient-to-tr from-secondary/15 via-tertiary-fixed/20 to-secondary-container/15 border border-outline-variant/30 shadow-sm">
+          <img src="student-profile.jpg" alt="Noraze Khan - Computer Science Student" class="w-full h-full object-cover rounded-lg"/>
+        </div>
+
+        <!-- Name & Subtitle -->
+        <div class="flex flex-col items-center">
+          <h1 class="text-base xl:text-lg font-bold text-primary tracking-tight">Noraze Khan</h1>
+          <p class="text-[11px] font-semibold text-secondary">Aspiring Software Developer</p>
+          <p class="text-[11px] text-on-surface-variant">BSCS Student @ Qarshi University</p>
+        </div>
+
+        <!-- Quick Credentials Pills -->
+        <div class="flex flex-wrap items-center justify-center gap-1 pt-0.5">
+          <span class="px-2 py-0.5 rounded-full bg-surface-container text-[10px] font-medium text-on-surface">7th Semester</span>
+          <span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-[10px] font-medium text-on-secondary-fixed">Expected 2027</span>
+          <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-[10px] font-semibold text-primary">CGPA: 2.91</span>
+        </div>
+
+        <!-- Short Intro -->
+        <p class="text-[11px] text-on-surface-variant leading-relaxed px-1">
+          Building web applications and exploring AI-powered solutions. Ready for an internship opportunity.
+        </p>
+      </div>
+
+      <!-- Contact Details & Action Links -->
+      <div class="flex flex-col gap-1.5 pt-2 border-t border-outline-variant/20">
+        <a href="mailto:norazekha01@gmail.com" class="flex items-center gap-2 text-[11px] text-on-surface-variant hover:text-secondary transition-colors p-1 rounded-lg hover:bg-surface-container">
+          <div class="w-5 h-5 rounded bg-surface-container flex items-center justify-center text-secondary shrink-0">
+            <span class="material-symbols-outlined text-[13px]">mail</span>
+          </div>
+          <span class="truncate">norazekha01@gmail.com</span>
+        </a>
+        <a href="https://github.com/NorazeAliKhan" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-[11px] text-on-surface-variant hover:text-secondary transition-colors p-1 rounded-lg hover:bg-surface-container">
+          <div class="w-5 h-5 rounded bg-surface-container flex items-center justify-center text-secondary shrink-0">
+            <span class="material-symbols-outlined text-[13px]">terminal</span>
+          </div>
+          <span class="truncate">github.com/NorazeAliKhan</span>
+        </a>
+        <div class="flex items-center gap-2 text-[11px] text-on-surface-variant p-1">
+          <div class="w-5 h-5 rounded bg-surface-container flex items-center justify-center text-secondary shrink-0">
+            <span class="material-symbols-outlined text-[13px]">location_on</span>
+          </div>
+          <span>Lahore, Pakistan</span>
+        </div>
+
+        <!-- Quick Tab Buttons in Sidebar -->
+        <div class="grid grid-cols-2 gap-1.5 pt-1">
+          <button onclick="switchTab('projects')" class="h-7 rounded-lg bg-surface-container text-[11px] font-semibold text-primary hover:bg-surface-container-high transition-colors">
+            Projects
+          </button>
+          <button onclick="switchTab('skills')" class="h-7 rounded-lg bg-surface-container text-[11px] font-semibold text-primary hover:bg-surface-container-high transition-colors">
+            Skills
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT CONTENT VIEWPORT (ZERO SCROLL, FITTED PERFECTLY) -->
+    <div class="flex-1 flex flex-col overflow-hidden bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 relative">
+
+      <!-- ================= 1. OVERVIEW PANEL ================= -->
+      <section id="panel-overview" class="view-panel active flex-col flex-1 p-3.5 sm:p-5 overflow-hidden justify-between gap-3">
+        <!-- Banner -->
+        <div class="p-3.5 rounded-xl bg-gradient-to-r from-surface-container-low to-surface-container flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border border-outline-variant/20">
+          <div class="flex flex-col gap-1 max-w-xl">
+            <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-highest text-on-tertiary-fixed-variant text-[11px] font-semibold w-max">
+              <span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed-dim"></span>
+              <span>Available for Summer 2025 Internships</span>
+            </div>
+            <h2 class="text-lg xl:text-xl font-extrabold text-primary tracking-tight">Hi, I'm Noraze Khan</h2>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Aspiring Software Developer & 7th-Semester BSCS Student at Qarshi University. Enthusiastic about web development, OOP architecture, and AI-assisted applications.
+            </p>
+          </div>
+          <div class="flex sm:flex-col gap-1.5 shrink-0">
+            <button onclick="switchTab('projects')" class="h-7 px-3 rounded-lg bg-secondary text-on-secondary text-xs font-semibold hover:bg-secondary-container transition-colors shadow-sm flex items-center justify-center gap-1">
+              <span>Projects</span>
+              <span class="material-symbols-outlined text-[13px]">arrow_forward</span>
+            </button>
+            <button onclick="switchTab('contact')" class="h-7 px-3 rounded-lg bg-surface-container text-primary text-xs font-semibold hover:bg-surface-container-high transition-colors flex items-center justify-center">
+              Contact Me
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 Stat Cards Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/20 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold block">Degree</span>
+              <h3 class="text-xs font-bold text-primary">BS Computer Science</h3>
+              <p class="text-[11px] text-on-surface-variant">Qarshi University</p>
+            </div>
+            <span class="material-symbols-outlined text-secondary text-[22px]">school</span>
+          </div>
+
+          <div class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/20 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold block">Graduation</span>
+              <h3 class="text-xs font-bold text-primary">Expected 2027</h3>
+              <p class="text-[11px] text-on-surface-variant">7th Semester</p>
+            </div>
+            <span class="material-symbols-outlined text-secondary text-[22px]">event_available</span>
+          </div>
+
+          <div class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/20 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold block">Academic Standing</span>
+              <h3 class="text-xs font-bold text-primary">2.91 <span class="text-[10px] font-normal text-outline">/ 4.00</span></h3>
+              <p class="text-[11px] text-on-surface-variant">Cumulative CGPA</p>
+            </div>
+            <span class="material-symbols-outlined text-secondary text-[22px]">analytics</span>
+          </div>
+        </div>
+
+        <!-- Quick 2-Column Overview of Skills & Projects -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 flex-1 overflow-hidden">
+          <!-- Skills Quick Preview Card -->
+          <div class="p-3 rounded-lg bg-surface-container-low/70 border border-outline-variant/20 flex flex-col justify-between gap-1.5 overflow-hidden">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-secondary text-[16px]">code</span>
+                <h3 class="text-xs font-bold text-primary">Core Technical Skills</h3>
+              </div>
+              <button onclick="switchTab('skills')" class="text-[11px] text-secondary hover:underline font-semibold flex items-center">
+                All Skills <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1">
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Python</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Java</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">C++</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">JavaScript</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">React.js</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Node.js</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">PHP</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">OOP</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Web Dev</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Git</span>
+            </div>
+          </div>
+
+          <!-- Featured Projects Quick Preview Card -->
+          <div class="p-3 rounded-lg bg-surface-container-low/70 border border-outline-variant/20 flex flex-col justify-between gap-1.5 overflow-hidden">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-secondary text-[16px]">rocket_launch</span>
+                <h3 class="text-xs font-bold text-primary">Featured Projects</h3>
+              </div>
+              <button onclick="switchTab('projects')" class="text-[11px] text-secondary hover:underline font-semibold flex items-center">
+                All Projects <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+              </button>
+            </div>
+            <div class="space-y-1 text-xs">
+              <div class="flex items-center justify-between p-1 rounded bg-surface-container-lowest border border-outline-variant/15">
+                <span class="font-semibold text-primary truncate text-[11px]">Fixora — Home Services Platform</span>
+                <span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-on-tertiary-fixed-variant text-[10px] font-medium">In Progress</span>
+              </div>
+              <div class="flex items-center justify-between p-1 rounded bg-surface-container-lowest border border-outline-variant/15">
+                <span class="font-semibold text-primary truncate text-[11px]">AI Interior Design — FYP</span>
+                <span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-on-tertiary-fixed-variant text-[10px] font-medium">In Progress</span>
+              </div>
+              <div class="flex items-center justify-between p-1 rounded bg-surface-container-lowest border border-outline-variant/15">
+                <span class="font-semibold text-primary truncate text-[11px]">University Portal — OOP</span>
+                <span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-primary text-[10px] font-semibold">Completed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. ABOUT ME PANEL ================= -->
+      <section id="panel-about" class="view-panel flex-col flex-1 p-3.5 sm:p-5 overflow-hidden justify-between gap-3">
+        <div class="flex items-center gap-2.5 pb-1.5 border-b border-outline-variant/20 shrink-0">
+          <div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-secondary">
+            <span class="material-symbols-outlined text-[18px]">person</span>
+          </div>
+          <div>
+            <h2 class="text-base font-bold text-primary leading-tight">About Me</h2>
+            <p class="text-[11px] text-on-surface-variant">Academic background and professional goals.</p>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-lg bg-surface-container-low border border-outline-variant/20">
+          <p class="text-xs xl:text-sm text-on-surface leading-relaxed">
+            I'm a seventh-semester BSCS student at Qarshi University with an interest in software development, web technologies, and artificial intelligence. I enjoy working on academic and personal projects that help me strengthen my programming and problem-solving skills. I'm seeking an internship where I can gain practical experience and contribute to real-world software solutions.
+          </p>
+        </div>
+
+        <!-- 3 Info Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 shadow-sm interactive-card">
+            <div class="flex items-center justify-between pb-1">
+              <span class="material-symbols-outlined text-secondary text-[20px]">school</span>
+              <span class="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold">Degree</span>
+            </div>
+            <h3 class="text-xs font-bold text-primary">BS Computer Science</h3>
+            <p class="text-[11px] text-on-surface-variant">Qarshi University</p>
+          </div>
+
+          <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 shadow-sm interactive-card">
+            <div class="flex items-center justify-between pb-1">
+              <span class="material-symbols-outlined text-secondary text-[20px]">event_available</span>
+              <span class="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold">Timeline</span>
+            </div>
+            <h3 class="text-xs font-bold text-primary">Expected 2027</h3>
+            <p class="text-[11px] text-on-surface-variant">7th Semester</p>
+          </div>
+
+          <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 shadow-sm interactive-card">
+            <div class="flex items-center justify-between pb-1">
+              <span class="material-symbols-outlined text-secondary text-[20px]">analytics</span>
+              <span class="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold">Performance</span>
+            </div>
+            <h3 class="text-xs font-bold text-primary">2.91 <span class="text-[10px] text-outline font-normal">/ 4.00</span></h3>
+            <p class="text-[11px] text-on-surface-variant">Academic Standing</p>
+          </div>
+        </div>
+
+        <!-- Core Focus Areas -->
+        <div class="p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 flex flex-col gap-1.5">
+          <h4 class="text-[10px] font-bold uppercase tracking-wider text-primary">Key Focus Areas</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div class="p-2 rounded bg-surface-container-lowest border border-outline-variant/15">
+              <span class="text-xs font-bold text-secondary block">Web Platforms</span>
+              <p class="text-[11px] text-on-surface-variant">Modern frontend & backend architectures.</p>
+            </div>
+            <div class="p-2 rounded bg-surface-container-lowest border border-outline-variant/15">
+              <span class="text-xs font-bold text-secondary block">Software Architecture</span>
+              <p class="text-[11px] text-on-surface-variant">Object-Oriented Programming (OOP) & clean design.</p>
+            </div>
+            <div class="p-2 rounded bg-surface-container-lowest border border-outline-variant/15">
+              <span class="text-xs font-bold text-secondary block">AI Integration</span>
+              <p class="text-[11px] text-on-surface-variant">Exploring machine learning & intelligent web tools.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. TECHNICAL SKILLS PANEL ================= -->
+      <section id="panel-skills" class="view-panel flex-col flex-1 p-3.5 sm:p-5 overflow-hidden justify-between gap-2.5">
+        <div class="flex items-center justify-between pb-1.5 border-b border-outline-variant/20 shrink-0">
+          <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-secondary">
+              <span class="material-symbols-outlined text-[18px]">code</span>
+            </div>
+            <div>
+              <h2 class="text-base font-bold text-primary leading-tight">Technical Skills</h2>
+              <p class="text-[11px] text-on-surface-variant">6 organized core competency categories.</p>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-semibold">6 Categories</span>
+        </div>
+
+        <!-- 6 Skills Cards in a 3x2 Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5 flex-1 overflow-hidden">
+          <!-- 1. Programming Languages -->
+          <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 shadow-sm interactive-card flex flex-col justify-between gap-1.5">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-secondary">terminal</span>
+              <h3 class="text-xs font-bold text-primary">Programming</h3>
+            </div>
+            <div class="flex flex-wrap gap-1">
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Python</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Java</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">C++</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">JavaScript</span>
+            </div>
+          </div>
+
+          <!-- 2. Frontend Development -->
+          <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 shadow-sm interactive-card flex flex-col justify-between gap-1.5">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-secondary">web</span>
+              <h3 class="text-xs font-bold text-primary">Frontend</h3>
+            </div>
+            <div class="flex flex-wrap gap-1">
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">HTML5</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">CSS3</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">React.js</span>
+            </div>
+          </div>
+
+          <!-- 3. Backend Development -->
+          <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 shadow-sm interactive-card flex flex-col justify-between gap-1.5">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-secondary">dns</span>
+              <h3 class="text-xs font-bold text-primary">Backend</h3>
+            </div>
+            <div class="flex flex-wrap gap-1">
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Node.js</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">PHP</span>
+            </div>
+          </div>
+
+          <!-- 4. Database Technologies -->
+          <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 shadow-sm interactive-card flex flex-col justify-between gap-1.5">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-secondary">database</span>
+              <h3 class="text-xs font-bold text-primary">Database</h3>
+            </div>
+            <p class="text-[11px] text-on-surface-variant">Database fundamentals and database technologies.</p>
+            <div class="flex flex-wrap gap-1">
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Database Fundamentals</span>
+            </div>
+          </div>
+
+          <!-- 5. Tools & Design -->
+          <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 shadow-sm interactive-card flex flex-col justify-between gap-1.5">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-secondary">build</span>
+              <h3 class="text-xs font-bold text-primary">Tools & Design</h3>
+            </div>
+            <div class="flex flex-wrap gap-1">
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Git</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">GitHub</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">VS Code</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Figma</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">AI Tools</span>
+            </div>
+          </div>
+
+          <!-- 6. Core Concepts -->
+          <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 shadow-sm interactive-card flex flex-col justify-between gap-1.5">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-secondary">psychology</span>
+              <h3 class="text-xs font-bold text-primary">Core Concepts</h3>
+            </div>
+            <div class="flex flex-wrap gap-1">
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Object-Oriented Programming (OOP)</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-[11px] font-medium text-on-surface">Web Development</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 4. FEATURED PROJECTS PANEL ================= -->
+      <section id="panel-projects" class="view-panel flex-col flex-1 p-3.5 sm:p-5 overflow-hidden justify-between gap-2.5">
+        <div class="flex items-center justify-between pb-1.5 border-b border-outline-variant/20 shrink-0">
+          <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-secondary">
+              <span class="material-symbols-outlined text-[18px]">rocket_launch</span>
+            </div>
+            <div>
+              <h2 class="text-base font-bold text-primary leading-tight">Featured Projects</h2>
+              <p class="text-[11px] text-on-surface-variant">Applied software development and academic demonstrations.</p>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary text-[10px] font-semibold">3 Projects</span>
+        </div>
+
+        <!-- 3 Project Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 flex-1 overflow-hidden">
+          <!-- Project 1: Fixora -->
+          <div class="rounded-xl bg-surface-container-low border border-outline-variant/20 shadow-sm flex flex-col justify-between overflow-hidden interactive-card">
+            <div>
+              <div class="w-full h-20 bg-surface-container flex items-center justify-center p-2">
+                <svg class="w-full h-full text-secondary" fill="none" viewbox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="40" cy="60" fill="currentColor" fill-opacity="0.15" r="18"></circle>
+                  <circle cx="40" cy="60" fill="currentColor" r="6"></circle>
+                  <path d="M58 60 H102" stroke="currentColor" stroke-dasharray="4 4" stroke-width="2"></path>
+                  <circle cx="120" cy="60" fill="currentColor" fill-opacity="0.25" r="22"></circle>
+                  <path d="M112 60 L120 52 L128 60 V70 H112 V60 Z" fill="currentColor"></path>
+                  <path d="M138 60 H182" stroke="currentColor" stroke-dasharray="4 4" stroke-width="2"></path>
+                  <circle cx="200" cy="60" fill="currentColor" fill-opacity="0.15" r="18"></circle>
+                  <circle cx="200" cy="60" fill="currentColor" r="6"></circle>
+                  <rect fill="currentColor" fill-opacity="0.1" height="16" rx="4" width="80" x="80" y="94"></rect>
+                </svg>
+              </div>
+              <div class="p-2.5 flex flex-col gap-1">
+                <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-surface-container-highest text-on-tertiary-fixed-variant text-[10px] font-semibold w-max">
+                  In Progress
+                </span>
+                <h3 class="text-xs font-bold text-primary">Fixora — Home Services Platform</h3>
+                <p class="text-[11px] text-on-surface-variant leading-relaxed line-clamp-2">
+                  A home-services platform connecting customers with service providers through profiles, discovery, and booking requests.
+                </p>
+              </div>
+            </div>
+            <div class="p-2.5 pt-0 flex flex-col gap-1">
+              <div class="flex flex-wrap gap-1">
+                <span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface font-medium">Web Dev</span>
+                <span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface font-medium">Service Discovery</span>
+              </div>
+              <span class="text-[10px] text-on-surface-variant italic">Development in progress</span>
+            </div>
+          </div>
+
+          <!-- Project 2: AI Interior Design -->
+          <div class="rounded-xl bg-surface-container-low border border-outline-variant/20 shadow-sm flex flex-col justify-between overflow-hidden interactive-card">
+            <div>
+              <div class="w-full h-20 bg-surface-container flex items-center justify-center p-2">
+                <svg class="w-full h-full text-secondary" fill="none" viewbox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M120 20 L200 60 L120 100 L40 60 Z" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="1.5"></path>
+                  <path d="M40 60 V90 L120 130 V100 Z" fill="currentColor" fill-opacity="0.15"></path>
+                  <path d="M200 60 V90 L120 130 V100 Z" fill="currentColor" fill-opacity="0.2"></path>
+                  <path d="M120 20 V100" stroke="currentColor" stroke-dasharray="3 3" stroke-width="1"></path>
+                  <circle cx="120" cy="50" fill="currentColor" r="5"></circle>
+                  <circle cx="80" cy="65" fill="currentColor" r="4"></circle>
+                  <circle cx="160" cy="65" fill="currentColor" r="4"></circle>
+                </svg>
+              </div>
+              <div class="p-2.5 flex flex-col gap-1">
+                <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-surface-container-highest text-on-tertiary-fixed-variant text-[10px] font-semibold w-max">
+                  In Progress | FYP
+                </span>
+                <h3 class="text-xs font-bold text-primary">AI Interior Design</h3>
+                <p class="text-[11px] text-on-surface-variant leading-relaxed line-clamp-2">
+                  An AI-assisted interior design web application intended to help users explore interior design concepts.
+                </p>
+              </div>
+            </div>
+            <div class="p-2.5 pt-0 flex flex-col gap-1">
+              <div class="flex flex-wrap gap-1">
+                <span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface font-medium">AI</span>
+                <span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface font-medium">Web Dev</span>
+              </div>
+              <span class="text-[10px] text-on-surface-variant italic">Development in progress</span>
+            </div>
+          </div>
+
+          <!-- Project 3: University Portal -->
+          <div class="rounded-xl bg-surface-container-low border border-outline-variant/20 shadow-sm flex flex-col justify-between overflow-hidden interactive-card">
+            <div>
+              <div class="w-full h-20 bg-surface-container flex items-center justify-center p-2">
+                <svg class="w-full h-full text-secondary" fill="none" viewbox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+                  <rect fill="currentColor" fill-opacity="0.1" height="75" rx="6" stroke="currentColor" stroke-width="1.5" width="160" x="40" y="25"></rect>
+                  <rect fill="currentColor" fill-opacity="0.2" height="50" rx="3" width="40" x="52" y="38"></rect>
+                  <rect fill="currentColor" height="12" rx="2" width="84" x="104" y="38"></rect>
+                  <rect fill="currentColor" fill-opacity="0.4" height="8" rx="2" width="60" x="104" y="56"></rect>
+                  <rect fill="currentColor" fill-opacity="0.4" height="8" rx="2" width="70" x="104" y="70"></rect>
+                  <circle cx="72" cy="55" fill="currentColor" r="10"></circle>
+                </svg>
+              </div>
+              <div class="p-2.5 flex flex-col gap-1">
+                <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-surface-container-highest text-primary text-[10px] font-semibold w-max">
+                  Completed | OOP
+                </span>
+                <h3 class="text-xs font-bold text-primary">University Portal</h3>
+                <p class="text-[11px] text-on-surface-variant leading-relaxed line-clamp-2">
+                  An academic Object-Oriented Programming project focused on a university portal to manage student and course records.
+                </p>
+              </div>
+            </div>
+            <div class="p-2.5 pt-0 flex flex-col gap-1">
+              <div class="flex flex-wrap gap-1">
+                <span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface font-medium">OOP</span>
+                <span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface font-medium">Java / C++</span>
+              </div>
+              <span class="text-[10px] text-on-surface-variant">Academic Demonstration</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 5. EDUCATION PANEL ================= -->
+      <section id="panel-education" class="view-panel flex-col flex-1 p-3.5 sm:p-5 overflow-hidden justify-between gap-3">
+        <div class="flex items-center gap-2.5 pb-1.5 border-b border-outline-variant/20 shrink-0">
+          <div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-secondary">
+            <span class="material-symbols-outlined text-[18px]">school</span>
+          </div>
+          <div>
+            <h2 class="text-base font-bold text-primary leading-tight">Education</h2>
+            <p class="text-[11px] text-on-surface-variant">Formal academic qualifications and standing.</p>
+          </div>
+        </div>
+
+        <!-- Qarshi University Card -->
+        <div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 interactive-card">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary shrink-0">
+              <span class="material-symbols-outlined text-[22px]">school</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <h3 class="text-sm font-bold text-primary">Qarshi University</h3>
+              <p class="text-xs font-semibold text-secondary">Bachelor of Science in Computer Science (BSCS)</p>
+              <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-on-surface-variant">
+                <span>Currently in 7th Semester (Expected: 2027)</span>
+                <span>•</span>
+                <span>Lahore, Pakistan</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sm:text-right shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-outline-variant/20">
+            <span class="text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold block">Cumulative GPA</span>
+            <span class="text-xl font-bold text-primary">2.91 <span class="text-xs font-normal text-outline">/ 4.00</span></span>
+          </div>
+        </div>
+
+        <!-- Academic Highlights -->
+        <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 flex flex-col gap-1.5">
+          <h4 class="text-[10px] font-bold uppercase tracking-wider text-primary">Key Coursework Foundations</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+            <div class="p-2 rounded bg-surface-container-low text-on-surface text-[11px] font-medium text-center">Data Structures & OOP</div>
+            <div class="p-2 rounded bg-surface-container-low text-on-surface text-[11px] font-medium text-center">Database Management</div>
+            <div class="p-2 rounded bg-surface-container-low text-on-surface text-[11px] font-medium text-center">Software Engineering</div>
+            <div class="p-2 rounded bg-surface-container-low text-on-surface text-[11px] font-medium text-center">Web Technologies</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 6. CERTIFICATIONS PANEL ================= -->
+      <section id="panel-certifications" class="view-panel flex-col flex-1 p-3.5 sm:p-5 overflow-hidden justify-between gap-3">
+        <div class="flex items-center gap-2.5 pb-1.5 border-b border-outline-variant/20 shrink-0">
+          <div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-secondary">
+            <span class="material-symbols-outlined text-[18px]">verified</span>
+          </div>
+          <div>
+            <h2 class="text-base font-bold text-primary leading-tight">Certifications & Learning</h2>
+            <p class="text-[11px] text-on-surface-variant">Verified credentials from leading platforms.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Cert 1: Artificial Intelligence -->
+          <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/20 shadow-sm flex items-center justify-between gap-3 interactive-card">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-secondary shrink-0">
+                <span class="material-symbols-outlined text-[20px]">psychology</span>
+              </div>
+              <div>
+                <h3 class="text-xs font-bold text-primary">Artificial Intelligence</h3>
+                <p class="text-[11px] text-on-surface-variant">Coursera</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-0.5 rounded-full bg-surface-container-highest text-on-surface text-[11px] font-semibold shrink-0">
+              Completed
+            </span>
+          </div>
+
+          <!-- Cert 2: Web Development -->
+          <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/20 shadow-sm flex items-center justify-between gap-3 interactive-card">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-secondary shrink-0">
+                <span class="material-symbols-outlined text-[20px]">language</span>
+              </div>
+              <div>
+                <h3 class="text-xs font-bold text-primary">Web Development</h3>
+                <p class="text-[11px] text-on-surface-variant">Coursera</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-0.5 rounded-full bg-surface-container-highest text-on-surface text-[11px] font-semibold shrink-0">
+              Completed
+            </span>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-lg bg-surface-container-low/60 border border-outline-variant/20 flex items-center gap-3">
+          <span class="material-symbols-outlined text-secondary text-[20px] shrink-0">lightbulb</span>
+          <p class="text-[11px] text-on-surface-variant leading-relaxed">
+            Continuously advancing practical competencies through online courses, practical code implementations, and technical exploration in modern web frameworks and AI tools.
+          </p>
+        </div>
+      </section>
+
+      <!-- ================= 7. CONTACT PANEL ================= -->
+      <section id="panel-contact" class="view-panel flex-col flex-1 p-3.5 sm:p-5 overflow-hidden justify-between gap-3">
+        <div class="flex items-center gap-2.5 pb-1.5 border-b border-outline-variant/20 shrink-0">
+          <div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-secondary">
+            <span class="material-symbols-outlined text-[18px]">send</span>
+          </div>
+          <div>
+            <h2 class="text-base font-bold text-primary leading-tight">Let's Connect</h2>
+            <p class="text-[11px] text-on-surface-variant">Internship inquiries and professional collaboration.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1 overflow-hidden items-start">
+          <!-- Left: Contact Details -->
+          <div class="flex flex-col gap-2">
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              I'm actively seeking Software Development Internship opportunities where I can learn, build, and contribute.
+            </p>
+
+            <div class="flex flex-col gap-2 pt-1">
+              <a href="mailto:norazekha01@gmail.com" class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-center gap-2.5 border border-outline-variant/20 group">
+                <div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-colors shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">mail</span>
+                </div>
+                <div>
+                  <span class="text-[9px] uppercase tracking-wider text-on-surface-variant font-semibold block">Email Address</span>
+                  <span class="text-xs font-bold text-primary group-hover:text-secondary transition-colors">norazekha01@gmail.com</span>
+                </div>
+              </a>
+
+              <a href="https://github.com/NorazeAliKhan" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-center gap-2.5 border border-outline-variant/20 group">
+                <div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-colors shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">terminal</span>
+                </div>
+                <div>
+                  <span class="text-[9px] uppercase tracking-wider text-on-surface-variant font-semibold block">GitHub Profile</span>
+                  <span class="text-xs font-bold text-primary group-hover:text-secondary transition-colors">github.com/NorazeAliKhan</span>
+                </div>
+                <span class="material-symbols-outlined text-[14px] text-outline ml-auto">arrow_outward</span>
+              </a>
+
+              <div class="p-2.5 rounded-lg bg-surface-container-low flex items-center gap-2.5 border border-outline-variant/20">
+                <div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-secondary shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">location_on</span>
+                </div>
+                <div>
+                  <span class="text-[9px] uppercase tracking-wider text-on-surface-variant font-semibold block">Location</span>
+                  <span class="text-xs font-bold text-primary">Lahore, Pakistan</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Action Card -->
+          <div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 flex flex-col justify-between gap-2.5">
+            <div>
+              <h3 class="text-xs font-bold text-primary">Get In Touch Directly</h3>
+              <p class="text-[11px] text-on-surface-variant mt-0.5 leading-relaxed">
+                Feel free to email me regarding upcoming internships, technical interviews, or projects.
+              </p>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <a href="mailto:norazekha01@gmail.com" class="h-8 px-4 rounded-lg bg-secondary text-on-secondary text-xs font-semibold inline-flex items-center justify-center gap-1.5 shadow-sm hover:bg-secondary-container transition-all">
+                <span class="material-symbols-outlined text-[16px]">send</span>
+                <span>Send Direct Email</span>
+              </a>
+              <a href="https://github.com/NorazeAliKhan" target="_blank" rel="noopener noreferrer" class="h-8 px-4 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high text-xs font-semibold inline-flex items-center justify-center gap-1.5 transition-all border border-outline-variant/20">
+                <span>View GitHub Profile</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_outward</span>
+              </a>
+            </div>
+
+            <div class="p-2 rounded bg-surface-container-lowest/80 text-[10px] text-on-surface-variant text-center border border-outline-variant/15">
+              Available for immediate response and technical discussions.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- BOTTOM APP FOOTER (Fixed height: 34px, ZERO SCROLL) -->
+  <footer class="h-[34px] shrink-0 bg-primary-container text-on-primary-container border-t border-outline-variant/10 px-4 sm:px-6 flex items-center justify-between text-[11px] z-30">
+    <div class="flex items-center gap-2">
+      <span>&copy; 2026 Noraze Khan. All rights reserved.</span>
+    </div>
+
+    <!-- Center Navigation Hint -->
+    <div class="hidden sm:flex items-center gap-2 text-on-primary-container/80 text-[10px]">
+      <span>Tip: Click tabs or press [←] [→] arrow keys to switch sections</span>
+    </div>
+
+    <!-- Right Status -->
+    <div class="flex items-center gap-1.5 text-tertiary-fixed font-medium">
+      <span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed animate-pulse"></span>
+      <span class="hidden sm:inline">Lahore, Pakistan • Ready to contribute</span>
+      <span class="sm:hidden">Available</span>
+    </div>
+  </footer>
+
+  <!-- SCRIPT FOR INSTANT ZERO-SCROLL TAB SWITCHING -->
+  <script>
+    const tabs = ['overview', 'about', 'skills', 'projects', 'education', 'certifications', 'contact'];
+    let currentTabIndex = 0;
+
+    function switchTab(tabId) {
+      const targetIndex = tabs.indexOf(tabId);
+      if (targetIndex === -1) return;
+      currentTabIndex = targetIndex;
+
+      // Update Desktop and Mobile Tab Buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        const isMatch = btn.getAttribute('data-tab') === tabId;
+        if (isMatch) {
+          btn.classList.remove('text-on-surface-variant', 'font-medium', 'hover:bg-surface-container');
+          btn.classList.add('bg-secondary', 'text-on-secondary', 'font-semibold', 'shadow-sm');
+          btn.setAttribute('aria-selected', 'true');
+        } else {
+          btn.classList.remove('bg-secondary', 'text-on-secondary', 'font-semibold', 'shadow-sm');
+          btn.classList.add('text-on-surface-variant', 'font-medium', 'hover:bg-surface-container');
+          btn.setAttribute('aria-selected', 'false');
+        }
+      });
+
+      // Update View Panels
+      document.querySelectorAll('.view-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+
+      const activePanel = document.getElementById('panel-' + tabId);
+      if (activePanel) {
+        activePanel.classList.add('active');
+      }
+    }
+
+    // Attach click and keyboard events
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tabId = btn.getAttribute('data-tab');
+          if (tabId) switchTab(tabId);
+        });
+      });
+
+      // Keyboard navigation
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        if (e.key === 'ArrowRight') {
+          currentTabIndex = (currentTabIndex + 1) % tabs.length;
+          switchTab(tabs[currentTabIndex]);
+        } else if (e.key === 'ArrowLeft') {
+          currentTabIndex = (currentTabIndex - 1 + tabs.length) % tabs.length;
+          switchTab(tabs[currentTabIndex]);
+        } else if (e.key >= '1' && e.key <= '7') {
+          const index = parseInt(e.key) - 1;
+          if (index >= 0 && index < tabs.length) {
+            switchTab(tabs[index]);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
